@@ -1,0 +1,113 @@
+﻿.identity-box {
+    text-align: center;
+}
+
+input, .button-type {
+    background: #353535;
+    color: yellow;
+}
+
+input:focus, .button-type:focus {
+    color: yellow;
+    background-color: #505050;
+}
+
+.search-components {
+    text-align: center;
+}
+
+.messengers-area {
+    min-height: 93.5vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.open-messengers {
+    width: 75%;
+    height: 90vh;
+    background: #555555;
+    text-align: center;
+}
+
+.messengers-zone {
+    margin: 1vh;
+    height: 90vh;
+    width: 25%;
+    text-align: center;
+    background: #202020;
+}
+
+.messengers-list {
+    text-align: left;
+    overflow: auto;
+    height: 94%
+}
+
+.messengers-list h3 {
+    font-size: 2.5vh;
+}
+
+#inputForm {
+    position: absolute;
+    display: flex;
+    width: 73%;
+    bottom: 6%;
+    justify-content: space-between;
+    text-align: center;
+}
+
+#chatroom {
+    background: #252525;
+    margin: 1vh;
+    height: 90%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#inputForm #message {
+    margin-left: 3vh;
+    width: 60%;
+}
+
+#inputForm #sendContent {
+    margin-right: 3vh;
+    width: 25%;
+}
+
+.messenger {
+    border: 1px solid black;
+}
+
+.messenger:hover {
+    background: #303030;
+}
+
+#chatroom p {
+
+}
+
+.recipienti {
+    text-align: left;
+    margin-left: 2%;
+    margin-right: 40%;
+    color: aqua;
+    word-wrap: break-word;
+}
+
+.sender {
+    text-align: right;
+    margin-right: 2%;
+    margin-left: 40%;
+    color: yellow;
+    word-wrap: break-word;
+}
+
+.recipienti h6{
+    font-size: 12px;
+}
+
+.time {
+    font-size: 10px;
+}

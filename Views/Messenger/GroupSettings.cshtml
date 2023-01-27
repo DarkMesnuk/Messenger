@@ -1,0 +1,28 @@
+﻿@model GroupSettingsViewModel
+
+<div class="group-box">
+    <form asp-controller="Messenger" asp-action="GroupSettings" method="post">
+
+        <input asp-for="GroupId" type="hidden" value="@Model.GroupId" />
+
+        <div class="string-parametrs" id="name">
+            <input asp-for="Name" value="@Model.Name" />
+            <span asp-validation-for="Name" />
+        </div>
+
+        <div class="string-parametrs" id="text">
+            <input asp-for="Text" value="@Model.Text" />
+            <span asp-validation-for="Text" />
+        </div>
+
+        <div class="checkbox" id="ispublic">
+            <input asp-for="IsPublic" value="@Model.IsPublic" />
+            <span asp-validation-for="IsPublic" />
+        </div>
+
+        <div class="action-buttons">
+            <input type="submit" asp-controller="Messenger" asp-action="GroupSettings" value="Зберегти" />
+        </div>
+
+    </form>
+</div>

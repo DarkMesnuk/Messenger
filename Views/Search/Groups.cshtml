@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Пошук";
+    ICollection<SGroup> groups = Model;
+}
+
+<div class="search-components">
+    <h3>Список груп</h3>
+    <br />
+
+    @await Html.PartialAsync("Filter")
+</div>
+
+<div class="search-list">
+    @foreach (var group in groups)
+    {
+        <h5>
+            @group.Name - Кількість учасників: @group.MembersCount - <a asp-controller="Messenger" asp-action="JoinGroup" method="post" asp-route-messengerId="@group.Id">Приєднатися</a>
+        </h5>
+    }
+</div>

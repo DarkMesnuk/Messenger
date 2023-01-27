@@ -1,0 +1,37 @@
+﻿header {
+    width: 100%;
+    padding-top: 2vh;
+    float: left;
+    background: #353535;
+}
+
+ul {
+    display: flex;
+    gap: 72px;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+ul li{
+    list-style: none;
+}
+
+ul li a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: yellow;
+    padding: 10px;
+}
+
+ul:hover li a {
+    text-decoration: none;
+    color: #00d8ff;
+    animation: glowing ls ease-in-out infinite alternate;
+}
+
+ul:hover li a:not(:hover) {
+    color: yellow;
+    opacity: 0.3;
+    filter: blur(1px);
+}

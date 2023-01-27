@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Пошук";
+    ICollection<SProfile> profiles = Model;
+}
+<div class="search-components">
+    <h3>Список профілів</h3>
+    <br />
+
+    @await Html.PartialAsync("Filter")
+</div>
+
+<div class="search-list">
+    @foreach (var profile in profiles)
+    {
+        <h5>
+            @profile.NickName - <a asp-controller="Messenger" asp-action="OpenChat" method="get" asp-route-profileId="@profile.Id">Написати</a>
+        </h5>
+        <br />
+    }
+</div>

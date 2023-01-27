@@ -1,0 +1,23 @@
+﻿@model CreateGroupViewModel
+<h2>Створення Групи</h2>
+
+<div class="group-box">
+    <form asp-controller="Messenger" asp-action="CreateGroup" method="post">
+
+        <div class="string-parametrs" id="name">
+            <label asp-for="Name"></label>
+            <br />
+            <input asp-for="Name" />
+        </div>
+
+        <div class="checkbox" id="ispublic">
+            <label asp-for="IsPublic"></label>
+            <input asp-for="IsPublic" type="checkbox" />
+        </div>
+        
+        <div class="action-buttons">
+            <input type="submit" asp-controller="Messenger" asp-action="CreateGroup" value="Створити" />
+        </div>
+
+    </form>
+</div>

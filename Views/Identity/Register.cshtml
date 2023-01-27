@@ -1,0 +1,33 @@
+﻿@model RegisterViewModel
+<link rel="stylesheet" href="~/css/Identity/Main.css" />
+<div class="identity-box">
+    <h2 class="identity-name">Реєстрування</h2>
+
+    <form asp-area="" asp-controller="Identity" asp-action="Register" method="post">
+        <div class="string-parametrs" id="nickname">
+            <input asp-for="NickName" required="NickName" />
+            <label asp-for="NickName"></label>
+        </div>
+        
+        <div class="string-parametrs" id="email">
+            <input asp-for="Email" required="Email" />
+            <label asp-for="Email"></label>
+        </div>
+        
+        <div class="string-parametrs" id="password">
+            <input asp-for="Password" required="Password" />
+            <label asp-for="Password"></label>
+        </div>
+        
+        <div class="string-parametrs" id="repeat-password">            
+            <input asp-for="RepeatPassword" required="RepeatPassword" />
+            <label asp-for="RepeatPassword"></label>
+        </div>
+        
+        <div class="action-buttons">
+            <input id="submit" type="submit" asp-controller="Identity" asp-action="Register" value="Зареєструватися" />
+            <a class="button-type" controller="Identity" asp-action="Login">Увійти</a>
+        </div>
+
+    </form>
+</div>

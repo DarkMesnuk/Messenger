@@ -1,0 +1,29 @@
+﻿@model LoginViewModel
+<link rel="stylesheet" href="~/css/Identity/Main.css" />
+<div class="identity-box">
+    <h2 class="identity-name">Вхід</h2>
+
+    <form asp-controller="Identity" asp-action="Login" method="post">
+
+        <div class="string-parametrs" id="email">
+            <input asp-for="Email" required="Email" />
+            <label asp-for="Email"></label>
+        </div>
+
+        <div class="string-parametrs" id="password">
+            <input asp-for="Password" required="Password" />
+            <label asp-for="Password"></label>
+        </div>
+        
+        <div class="checkbox">
+            <input id="rememberme" asp-for="RememberMe" name="RememberMe" />
+            <label asp-for="RememberMe"></label>
+        </div>
+        
+        <div class="action-buttons">
+            <input id="submit" type="submit" asp-controller="Identity" asp-action="Login" value="Увійти" />
+            <a class="button-type" asp-controller="Identity" asp-action="Register" >Зареєструватися</a>
+        </div>
+
+    </form>
+</div>

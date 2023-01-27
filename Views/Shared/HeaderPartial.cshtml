@@ -1,0 +1,15 @@
+﻿@if(User.Identity.IsAuthenticated)
+{
+    <header class="header">
+        <nav id="nav">
+            <ul>
+                <li>
+                    <a asp-controller="Home" asp-action="Index">Головна</a>
+                </li>
+                <li>
+                    <a asp-controller="Search" asp-action="Index">Пошук</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+}

@@ -1,0 +1,26 @@
+﻿body {
+    margin: 0px;
+    padding: 0;
+    background: #282828;
+    color: white;
+}
+
+footer {
+    width: 100%;
+    text-align: center;
+    color: #00d8ff;
+    float: left;
+    background: #353535;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+.main {
+    color: aqua;
+    width: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+}
