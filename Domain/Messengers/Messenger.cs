@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace ChatWithSignal.Domain.Messengers
 {
     [NotMapped]
-    public class Messenger : BMessenger
+    public class Messenger : BaseMessenger
     {
         /// <summary>
         /// Type
@@ -37,7 +37,7 @@ namespace ChatWithSignal.Domain.Messengers
         /// </summary>
         /// <param name="group"></param>
         public Messenger(Group group) 
-            : this(group.Id, MessengerTypeEnum.Group, group.Contents, group.Members) 
+            : this(group.Id, MessengerTypeEnum.Group, group.Members) 
         {
             Name = group.Name;
         }
@@ -47,9 +47,13 @@ namespace ChatWithSignal.Domain.Messengers
         /// </summary>
         /// <param name="chat"></param>
         public Messenger(Chat chat)
-            : this(chat.Id, MessengerTypeEnum.Chat, chat.Contents, chat.Members)
+            : this(chat.Id, MessengerTypeEnum.Chat, chat.Members)
             { }
 
+        /// <summary>
+        /// Create messenger based on chat and get current name / Створення месенджера на основі чату і отримання теперішньої назви
+        /// </summary>
+        /// <param name="chat"></param>
         public Messenger(Chat chat, Profile activeProfile)
             : this(chat)
         {
@@ -57,8 +61,8 @@ namespace ChatWithSignal.Domain.Messengers
             Name = chatMemberNickName[activeProfile.Id];
         }
 
-        private Messenger(Guid id, MessengerTypeEnum type, ICollection<Content> contents, ICollection<Member> members)
-            : base(id, contents, members)
+        private Messenger(Guid id, MessengerTypeEnum type, Dictionary<string, MemberRoleEnum> members)
+            : base(id, members)
         { 
             Type = type; 
         }

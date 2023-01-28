@@ -9,7 +9,7 @@ namespace ChatWithSignal.Domain.Search
     /// <summary>
     /// Profile for search / Профіль для пошуку
     /// </summary>
-    public class SProfile
+    public class SearchProfile
     {
         /// <summary>
         /// Id
@@ -26,7 +26,7 @@ namespace ChatWithSignal.Domain.Search
         /// Create profile for search by profile / Створення профілю для пошуку за профілем
         /// </summary>
         /// <param name="profile"></param>
-        public SProfile(Profile profile)
+        public SearchProfile(Profile profile)
         {
             Id = profile.Id;
             NickName = profile.NickName;

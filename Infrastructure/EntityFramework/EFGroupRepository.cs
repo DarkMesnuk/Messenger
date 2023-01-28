@@ -39,13 +39,13 @@ namespace ChatWithSignal.Infrastructure.EntityFramework
             return group;
         }
 
-        public async Task CreateAsync(Group group)
+        public async Task AddAsync(Group group)
         {
             _context.Groups.Add(group);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Group group)
+        public async Task RemoveAsync(Group group)
         {
             _context.Groups.Remove(group);
             await _context.SaveChangesAsync();

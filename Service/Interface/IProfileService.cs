@@ -16,7 +16,7 @@ namespace ChatWithSignal.Service.Interface
 
         Task<List<Profile>> GetByIdsAsync(IEnumerable<string> profilesId);
 
-        Task<ICollection<SProfile>> GetSAsync();
+        Task<ICollection<SearchProfile>> GetSAsync();
 
         Task JoinMessengerAsync(Profile profile, Messenger messenger);
 
@@ -24,7 +24,7 @@ namespace ChatWithSignal.Service.Interface
 
         Task SetLastActiveTimeAsync(Profile profile);
 
-        Task SetCurrentMessagerAsync(Profile profile, Messenger messager);
+        Task SetCurrentMessagerAsync(Profile profile, Messenger messeger);
 
         Task SaveAsync(Profile profile);
     }

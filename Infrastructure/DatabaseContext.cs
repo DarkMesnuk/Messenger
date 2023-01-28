@@ -2,7 +2,6 @@
 using ChatWithSignal.Domain.Identity;
 using ChatWithSignal.Domain.Messengers;
 using ChatWithSignal.Domain.Messengers.Components;
-using ChatWithSignal.Domain.Messengers.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +19,7 @@ namespace ChatWithSignal.Infrastructure
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Content> Contents { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelbuilder) => base.OnModelCreating(modelbuilder);

@@ -10,7 +10,7 @@ namespace ChatWithSignal.Domain.Search
     /// <summary>
     /// Group for search / Група для пошуку
     /// </summary>
-    public class SGroup
+    public class SearchGroup
     {
         /// <summary>
         /// Id
@@ -32,7 +32,7 @@ namespace ChatWithSignal.Domain.Search
         /// Create group for search by group / Створення групи для пошуку за групою
         /// </summary>
         /// <param name="group"></param>
-        public SGroup(Group group)
+        public SearchGroup(Group group)
         {
             Id = group.Id;
             Name = group.Name;

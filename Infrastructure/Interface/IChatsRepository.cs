@@ -10,9 +10,9 @@ namespace ChatWithSignal.Infrastructure.Interface
     {
         Task<Chat> GetAsync(Guid chatId);
 
-        Task CreateAsync(Chat chat);
+        Task AddAsync(Chat chat);
         
-        Task DeleteAsync(Chat chat);
+        Task RemoveAsync(Chat chat);
 
         Task SaveAsync(Chat chat);
     }

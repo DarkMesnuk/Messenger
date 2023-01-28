@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ChatWithSignal.Domain.Messengers
 {
-    public class Group : BMessenger
+    public class Group : BaseMessenger
     {
         /// <summary>
         /// Description / Опис
@@ -40,9 +40,10 @@ namespace ChatWithSignal.Domain.Messengers
         /// <param name="isPublic"></param>
         /// <param name="owner"></param>
         public Group(string groupName, bool isPublic, Profile owner)
-           : base(Guid.NewGuid(),
-                   new List<Content> { new Content(owner.Id, "Ви створили групу!") },
-                   new List<Member> { new Member(owner.Id, MemberRoleEnum.Owner) })
+           : base(
+                Guid.NewGuid(),
+                new Dictionary<string, MemberRoleEnum> { {owner.Id, MemberRoleEnum.Owner }}
+            )
         {
             Name = groupName;
             IsPublic = isPublic;
@@ -53,28 +54,14 @@ namespace ChatWithSignal.Domain.Messengers
         #endregion
 
         #region Processing
-
         /// <summary>
         /// Add member and save to json / Додавання учасника і зберігання у json
         /// </summary>
         /// <param name="member"></param>
         /// <returns></returns>
-        public Task AddMember(Member member)
+        public Task AddMember(Profile profile)
         {
-            Members.Add(member);
-            setMembersJson();
-
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Remove member and save to json / Видалення учасника і зберігання у json
-        /// </summary>
-        /// <param name="member"></param>
-        /// <returns></returns>
-        public Task RemoveMember(Member member)
-        {
-            Members.Remove(member);
+            Members.Add(profile.Id, MemberRoleEnum.User);
             setMembersJson();
 
             return Task.CompletedTask;
@@ -87,13 +74,13 @@ namespace ChatWithSignal.Domain.Messengers
         /// <param name="text"></param>
         /// <param name="isPublic"></param>
         /// <returns></returns>
-        public async Task ChangeSetting(string name, string text, bool isPublic)
+        public Task ChangeSetting(string name, string text, bool isPublic)
         {
             Name = name;
             Text = text;
             IsPublic = isPublic;
 
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
         private void setMembersJson() 

@@ -43,13 +43,13 @@ namespace ChatWithSignal.Service
             return profiles;
         }
 
-        public async Task<ICollection<SProfile>> GetSAsync()
+        public async Task<ICollection<SearchProfile>> GetSAsync()
         {
             var profiles = await _profileRepository.GetAsync();
-            var sprofiles = new List<SProfile>();
+            var sprofiles = new List<SearchProfile>();
 
             foreach (var profile in profiles)
-                sprofiles.Add(new SProfile(profile));
+                sprofiles.Add(new SearchProfile(profile));
 
             return sprofiles;
         }
@@ -82,9 +82,9 @@ namespace ChatWithSignal.Service
             await _profileRepository.SaveAsync(profile);
         }
 
-        public async Task SetCurrentMessagerAsync(Profile profile, Messenger messager)
+        public async Task SetCurrentMessagerAsync(Profile profile, Messenger messeger)
         {
-            await profile.SetCurrentMessager(messager);
+            await profile.SetCurrentMessager(messeger);
             await SetLastActiveTimeAsync(profile);
             await _profileRepository.SaveAsync(profile);
         }

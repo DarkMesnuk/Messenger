@@ -4,12 +4,17 @@ using System;
 
 namespace ChatWithSignal.Domain.Messengers.Base
 {
-    public abstract class BContent
+    public abstract class BaseContent
     {
         /// <summary>
         /// Id
         /// </summary>
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Messenger Id
+        /// </summary>
+        public Guid MessengerId { get; set; }
 
         /// <summary>
         /// DateTime Create // Дата створення 

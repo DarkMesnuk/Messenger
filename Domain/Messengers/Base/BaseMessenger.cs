@@ -1,4 +1,5 @@
 ﻿#region Library
+using ChatWithSignal.Domain.Enum;
 using ChatWithSignal.Domain.Messengers.Components;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ChatWithSignal.Domain.Messengers.Base
 {
-    public abstract class BMessenger
+    public abstract class BaseMessenger
     {
         /// <summary>
         /// Id
@@ -27,27 +28,16 @@ namespace ChatWithSignal.Domain.Messengers.Base
         public string MembersJson { get; protected set; }
 
         /// <summary>
-        /// Contents in Json / Зміст у Json
-        /// </summary>
-        public string ContentsJson { get; protected set; }
-
-        /// <summary>
-        /// Contents / Зміст
-        /// </summary>
-        [NotMapped]
-        public virtual ICollection<Content> Contents { get; private set; }
-
-        /// <summary>
         /// Members / Учасники
         /// </summary>
         [NotMapped]
-        public virtual ICollection<Member> Members { get; private set; }
+        public Dictionary<string, MemberRoleEnum> Members { get; protected set; }
 
         #region Constructors
         /// <summary>
         /// Default / За замовчуванням
         /// </summary>
-        protected BMessenger() { }
+        protected BaseMessenger() { }
 
         /// <summary>
         /// Create Bmessenger with all parameters / Створення Бмесенджера з усіма параметрами
@@ -55,10 +45,9 @@ namespace ChatWithSignal.Domain.Messengers.Base
         /// <param name="id"></param>
         /// <param name="contents"></param>
         /// <param name="members"></param>
-        protected BMessenger(Guid id, ICollection<Content> contents, ICollection<Member> members)
+        protected BaseMessenger(Guid id, Dictionary<string, MemberRoleEnum> members)
         {
             Id = id;
-            Contents = contents;
             Members = members;
         }
         #endregion
@@ -71,21 +60,7 @@ namespace ChatWithSignal.Domain.Messengers.Base
         /// <returns></returns>
         public Task GetFromJsonAsync()
         {
-            Contents = JsonSerializer.Deserialize<List<Content>>(ContentsJson);
-            Members = JsonSerializer.Deserialize<List<Member>>(MembersJson);
-
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Add content and save to json / Додавання змісту і зберігання у json
-        /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public Task AddContent(Content content)
-        {
-            Contents.Add(content);
-            ContentsJson = JsonSerializer.Serialize(Contents);
+            Members = JsonSerializer.Deserialize<Dictionary<string, MemberRoleEnum>>(MembersJson);
 
             return Task.CompletedTask;
         }

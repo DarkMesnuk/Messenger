@@ -1,11 +1,12 @@
 ﻿#region Library
+using ChatWithSignal.Domain.Identity;
 using ChatWithSignal.Domain.Messengers.Base;
 using System;
 #endregion
 
 namespace ChatWithSignal.Domain.Messengers.Components
 {
-    public class Content : BContent
+    public class Content : BaseContent
     {
         /// <summary>
         /// Message / Повідомлення
@@ -14,18 +15,21 @@ namespace ChatWithSignal.Domain.Messengers.Components
 
         #region Constructors
         /// <summary>
+        /// Default / За замовчуванням
+        /// </summary>
+        public Content()
+        { }
+
+        /// <summary>
         /// Create content with all parametrs / Створення змісту з усіма параметрами
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="day"></param>
-        /// <param name="time"></param>
         /// <param name="senderId"></param>
-        /// <param name="file"></param>
-        /// <param name="type"></param>
-        public Content(string senderId, string message)
+        /// <param name="message"></param>
+        public Content(Profile profile, BaseMessenger messenger, string message)
         {
-            SenderId = senderId;
+            SenderId = profile.Id;
             Message = message;
+            MessengerId = messenger.Id;
             DateTimeCreated = DateTime.UtcNow.ToString();
         }
         #endregion

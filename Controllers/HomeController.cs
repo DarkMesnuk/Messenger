@@ -23,6 +23,6 @@ namespace ChatWithSignal.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index()
-            => View((await _messengerService.GetMessengersAsync(User.Identity.Name)));
+            => View(await _messengerService.GetMessengersAsync(User.Identity.Name));
     }
 }

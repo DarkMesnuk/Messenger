@@ -2,6 +2,7 @@
 using ChatWithSignal.Domain.Enum;
 using ChatWithSignal.Domain.Identity;
 using ChatWithSignal.Domain.Messengers;
+using ChatWithSignal.Domain.Messengers.Base;
 using ChatWithSignal.Domain.Messengers.Components;
 using ChatWithSignal.Domain.Search;
 using ChatWithSignal.Infrastructure.Interface;
@@ -22,13 +23,14 @@ namespace ChatWithSignal.Service
         private readonly IGroupRepository _groupRepository;
 
         private readonly IProfileService _profileService;
-        //private readonly IHubContext<MainHub> _hubContext;
+        private readonly IContentServise _contentServise;
 
-        public MessengerService(IChatsRepository chatsRepository, IGroupRepository groupRepository, IProfileService profileService)
+        public MessengerService(IChatsRepository chatsRepository, IGroupRepository groupRepository, IProfileService profileService, IContentServise contentServise)
         {
             _chatsRepository = chatsRepository;
             _groupRepository = groupRepository;
             _profileService = profileService;
+            _contentServise = contentServise;
         }
         #endregion
 
@@ -62,21 +64,17 @@ namespace ChatWithSignal.Service
             }
         }
 
+        public async Task<List<Content>> GetContentsAsync(Messenger messenger)
+        {
+            return await _contentServise.GetAll(messenger);
+        }
+
         public async Task SendContentAsync(Profile profile, Messenger messenger, Content content)
         {
             if (isMember(messenger.Id, profile, messenger.Type))
             {
                 await _profileService.SetLastActiveTimeAsync(profile);
-
-                switch (messenger.Type)
-                {
-                    case MessengerTypeEnum.Chat:
-                        await sendChatContentAsync(messenger.Id, content);
-                        break;
-                    case MessengerTypeEnum.Group:
-                        await sendGroupContentAsync(messenger.Id, content);
-                        break;
-                }
+                await _contentServise.CreateAsync(content);
             }
         }
 
@@ -91,30 +89,23 @@ namespace ChatWithSignal.Service
             var sender = await _profileService.GetByEmailAsync(senderEmail);
             var chats = await getChatsAsync(recipient);
 
-            var chat = chats.FirstOrDefault(x => x.Members.Where(x => x.ProfileId == sender.Id).Any());
+            var chat = chats.FirstOrDefault(x => x.Members.Where(x => x.Key == sender.Id).Any());
 
             if (chat == null || chat == default)
-            {;
+            {
                 chat = new Chat(sender, recipient);
 
                 await _profileService.JoinMessengerAsync(sender, new Messenger(chat));
                 await _profileService.JoinMessengerAsync(recipient, new Messenger(chat));
 
-                await _chatsRepository.CreateAsync(chat);
+                await _chatsRepository.AddAsync(chat);
             }
+
+            await sender.SetCurrentMessager(new Messenger(chat));
 
             return chat;
         }
-
-        private async Task sendChatContentAsync(Guid chatId, Content content)
-        {
-            var chat = await _chatsRepository.GetAsync(chatId);
-
-            await chat.AddContent(content);
-
-            await _chatsRepository.SaveAsync(chat);
-        }
-
+        
         private async Task<ICollection<Chat>> getChatsAsync(Profile profile)
         {
             var profileChats = new List<Chat>();
@@ -149,13 +140,13 @@ namespace ChatWithSignal.Service
         #endregion
 
         #region Group
-        public async Task<ICollection<SGroup>> GetSGroupsAsync()
+        public async Task<ICollection<SearchGroup>> GetSGroupsAsync()
         {
             var groups = await _groupRepository.GetAsync();
-            var sGroups = new List<SGroup>();
+            var sGroups = new List<SearchGroup>();
 
             foreach (var group in groups)
-                sGroups.Add(new SGroup(group));
+                sGroups.Add(new SearchGroup(group));
 
             return sGroups;
         }
@@ -171,10 +162,11 @@ namespace ChatWithSignal.Service
                 if (!isMemberGroup)
                 {
                     await _profileService.JoinMessengerAsync(profile, new Messenger(group));
-                    await group.AddMember(new Member(profile.Id));
+                    await group.AddMember(profile);
                     await SaveGroupAsync(group);
                 }
 
+                await _profileService.SetCurrentMessagerAsync(profile, new Messenger(group));
                 return group;
             }
 
@@ -188,9 +180,10 @@ namespace ChatWithSignal.Service
 
             var messenger = new Messenger(group);
 
-            await _groupRepository.CreateAsync(group);
+            await _groupRepository.AddAsync(group);
 
             await _profileService.JoinMessengerAsync(owner, messenger);
+            await _profileService.SetCurrentMessagerAsync(owner, messenger);
         }
 
         public async Task ChangeGroupSettingsAsync(string profileEmail, GroupSettingsViewModel model)
@@ -208,15 +201,6 @@ namespace ChatWithSignal.Service
 
         public async Task SaveGroupAsync(Group group)
         {
-            await _groupRepository.SaveAsync(group);
-        }
-
-        private async Task sendGroupContentAsync(Guid groupId, Content content)
-        {
-            var group = await _groupRepository.GetAsync(groupId);
-
-            await group.AddContent(content);
-
             await _groupRepository.SaveAsync(group);
         }
 

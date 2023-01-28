@@ -25,8 +25,10 @@ namespace ChatWithSignal.Service.Interface
         Task<List<Messenger>> GetMessengersAsync(string profileEmail);
 
         Task<Messenger> GetMessengerAsync(string profileEmail, string messengerId, MessengerTypeEnum messengerType);
+        
+        Task<List<Content>> GetContentsAsync(Messenger messenger);
 
-        Task<ICollection<SGroup>> GetSGroupsAsync();
+        Task<ICollection<SearchGroup>> GetSGroupsAsync();
 
         Task ChangeGroupSettingsAsync(string profileEmail, GroupSettingsViewModel model);
 

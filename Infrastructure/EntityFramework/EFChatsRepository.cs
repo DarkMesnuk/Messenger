@@ -27,13 +27,13 @@ namespace ChatWithSignal.Infrastructure.EntityFramework
             return chat;
         }
 
-        public async Task CreateAsync(Chat chat)
+        public async Task AddAsync(Chat chat)
         {
             _context.Chats.Add(chat);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Chat chat)
+        public async Task RemoveAsync(Chat chat)
         {
             _context.Chats.Remove(chat);
             await _context.SaveChangesAsync();

@@ -53,7 +53,7 @@ namespace ChatWithSignal.Service.ChatHub
         {
             var profile = await activeProfile();
             var messenger = await _messengerService.GetMessengerAsync(Context.User.Identity.Name, profile.CurrentMessengerId.ToString(), profile.CurrentMessengerType);
-            var content = new Content(profile.Id, message);
+            var content = new Content(profile, messenger, message);
 
             await sendCallerAsync("Send", content.Message, content.DateTimeCreated.Split(' ')[1], profile.NickName, profile.Email);
             await sendOthersInGroupAsync(profile.CurrentMessengerId.ToString(), "Send", content.Message, content.DateTimeCreated.Split(' ')[1], profile.NickName, "");
@@ -66,14 +66,14 @@ namespace ChatWithSignal.Service.ChatHub
             => await _profileService.GetByEmailAsync(Context.User.Identity.Name);
 
         private async Task sendCallerAsync(string method, string message, string time, string nickName, string senderEmail)
-            => await Clients.Caller.SendAsync(method, message, time.Remove(5), nickName, Context.User.Identity.Name, senderEmail);
+            => await Clients.Caller.SendAsync(method, message, time.Remove(4), nickName, Context.User.Identity.Name, senderEmail);
 
         private async Task sendOthersInGroupAsync(string messengerId, string method, string message, string time, string nickName, string senderEmail)
-            => await Clients.OthersInGroup(messengerId).SendAsync(method, message, time.Remove(5), nickName, Context.User.Identity.Name, senderEmail);
+            => await Clients.OthersInGroup(messengerId).SendAsync(method, message, time.Remove(4), nickName, Context.User.Identity.Name, senderEmail);
 
         private async Task loadingMessenger(Messenger messenger)
         {
-            var profiles = await _profileService.GetByIdsAsync(messenger.Members.Select(x => x.ProfileId));
+            var profiles = await _profileService.GetByIdsAsync(messenger.Members.Keys);
             var profilesNickName = profiles.ToDictionary(x => x.Id, x => x.NickName);
             var profilesEmail = profiles.ToDictionary(x => x.Id, x => x.Email);
 
@@ -81,7 +81,9 @@ namespace ChatWithSignal.Service.ChatHub
 
             await Clients.Caller.SendAsync("Clear");
 
-            foreach (var message in messenger.Contents.OrderByDescending(x => x.DateTimeCreated))
+            var contents = await _messengerService.GetContentsAsync(messenger);
+
+            foreach (var message in contents.OrderByDescending(x => x.DateTimeCreated))
                 await sendCallerAsync("Load", message.Message, message.DateTimeCreated.Split(' ')[1], profilesNickName[message.SenderId], profilesEmail[message.SenderId]);
         }
         #endregion

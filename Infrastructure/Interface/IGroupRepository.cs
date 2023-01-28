@@ -13,9 +13,9 @@ namespace ChatWithSignal.Infrastructure.Interface
 
         Task<Group> GetAsync(Guid groupId);
 
-        Task CreateAsync(Group group);
+        Task AddAsync(Group group);
 
-        Task DeleteAsync(Group group);
+        Task RemoveAsync(Group group);
 
         Task SaveAsync(Group group);
     }

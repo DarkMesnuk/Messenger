@@ -38,11 +38,13 @@ namespace ChatWithSignal
             services.AddScoped<IProfileRepository, EFProfileRepository>();
             services.AddScoped<IChatsRepository, EFChatsRepository>();
             services.AddScoped<IGroupRepository, EFGroupRepository>();
+            services.AddScoped<IContentRepository, EFContentRepository>();
             #endregion
 
             #region Service
             services.AddScoped<IMessengerService, MessengerService>();
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IContentServise, ContentServise>();
             #endregion
 
             #region Підключаєм контекст Бази Даних
