@@ -3,6 +3,7 @@ using ChatWithSignal.Domain.Enum;
 using ChatWithSignal.Domain.Identity;
 using ChatWithSignal.Domain.Messengers.Base;
 using ChatWithSignal.Domain.Messengers.Components;
+using ChatWithSignal.Models.Messenger;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ChatWithSignal.Domain.Messengers
 {
-    public class Group : BaseMessenger
+    public class Group : BaseRepositoryMessenger
     {
         /// <summary>
         /// Description / Опис
@@ -41,7 +42,6 @@ namespace ChatWithSignal.Domain.Messengers
         /// <param name="owner"></param>
         public Group(string groupName, bool isPublic, Profile owner)
            : base(
-                Guid.NewGuid(),
                 new Dictionary<string, MemberRoleEnum> { {owner.Id, MemberRoleEnum.Owner }}
             )
         {
@@ -49,24 +49,10 @@ namespace ChatWithSignal.Domain.Messengers
             IsPublic = isPublic;
             OwnerId = owner.Id;
             Text = "";
-            MembersJson = JsonSerializer.Serialize(Members);
         }
         #endregion
 
         #region Processing
-        /// <summary>
-        /// Add member and save to json / Додавання учасника і зберігання у json
-        /// </summary>
-        /// <param name="member"></param>
-        /// <returns></returns>
-        public Task AddMember(Profile profile)
-        {
-            Members.Add(profile.Id, MemberRoleEnum.User);
-            setMembersJson();
-
-            return Task.CompletedTask;
-        }
-
         /// <summary>
         /// Change group settings / Змінна налаштувань групи
         /// </summary>
@@ -74,17 +60,23 @@ namespace ChatWithSignal.Domain.Messengers
         /// <param name="text"></param>
         /// <param name="isPublic"></param>
         /// <returns></returns>
-        public Task ChangeSetting(string name, string text, bool isPublic)
+        public Task ChangeSetting(GroupSettingsViewModel model)
         {
-            Name = name;
-            Text = text;
-            IsPublic = isPublic;
+            Name = string.IsNullOrEmpty(model.Name) ? Name : model.Name;
+            Text = model.Text == null ? Text : model.Text;
+            IsPublic = model.IsPublic;
 
             return Task.CompletedTask;
         }
 
-        private void setMembersJson() 
-            => MembersJson = JsonSerializer.Serialize(Members);
+        public Task AddMember(Profile profile)
+        {
+            var members = JsonSerializer.Deserialize<Dictionary<string, MemberRoleEnum>>(MembersJson);
+            members.Add(profile.Id, MemberRoleEnum.User);
+            MembersJson = JsonSerializer.Serialize(members);
+
+            return Task.CompletedTask;
+        }
         #endregion
     }
 }

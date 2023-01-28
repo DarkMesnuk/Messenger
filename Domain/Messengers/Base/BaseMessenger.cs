@@ -21,49 +21,5 @@ namespace ChatWithSignal.Domain.Messengers.Base
         /// Name / Назва
         /// </summary>
         public string Name { get; protected set; }
-
-        /// <summary>
-        /// Members in Json / Учасники у Json
-        /// </summary>
-        public string MembersJson { get; protected set; }
-
-        /// <summary>
-        /// Members / Учасники
-        /// </summary>
-        [NotMapped]
-        public Dictionary<string, MemberRoleEnum> Members { get; protected set; }
-
-        #region Constructors
-        /// <summary>
-        /// Default / За замовчуванням
-        /// </summary>
-        protected BaseMessenger() { }
-
-        /// <summary>
-        /// Create Bmessenger with all parameters / Створення Бмесенджера з усіма параметрами
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="contents"></param>
-        /// <param name="members"></param>
-        protected BaseMessenger(Guid id, Dictionary<string, MemberRoleEnum> members)
-        {
-            Id = id;
-            Members = members;
-        }
-        #endregion
-
-        #region Processing
-
-        /// <summary>
-        /// Set information about messages and members from their json / Встановлення інформації про повідомлення та учасників із їхнього json
-        /// </summary>
-        /// <returns></returns>
-        public Task GetFromJsonAsync()
-        {
-            Members = JsonSerializer.Deserialize<Dictionary<string, MemberRoleEnum>>(MembersJson);
-
-            return Task.CompletedTask;
-        }
-        #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿#region Library
+using ChatWithSignal.Domain.Messengers;
 using ChatWithSignal.Domain.Messengers.Components;
 using ChatWithSignal.Infrastructure.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,11 @@ namespace ChatWithSignal.Infrastructure.EntityFramework
             _context = context;
         }
         #endregion
+
+        public async Task<List<Content>> GetAllAsync(Messenger messenger)
+        {
+            return await _context.Contents.Where(x => x.MessengerType == messenger.Type && x.MessengerId == messenger.Id).ToListAsync();
+        }
 
         public async Task<Content> GetAsync(Guid contentId)
         {
@@ -44,9 +50,5 @@ namespace ChatWithSignal.Infrastructure.EntityFramework
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Content>> GetAllAsync(Guid messengerId)
-        {
-            return await _context.Contents.Where(x => x.MessengerId == messengerId).ToListAsync();
-        }
     }
 }

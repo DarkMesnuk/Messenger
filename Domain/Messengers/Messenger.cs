@@ -20,6 +20,12 @@ namespace ChatWithSignal.Domain.Messengers
         /// </summary>
         public MessengerTypeEnum Type { get; private set; }
 
+        /// <summary>
+        /// Members / Учасники
+        /// </summary>
+        [NotMapped]
+        public Dictionary<string, MemberRoleEnum> Members { get; protected set; }
+
         #region Constructors
         /// <summary>
         /// Create messenger with Id and type messenger / Створення месенджера лише з Id та типу месенджера
@@ -36,8 +42,8 @@ namespace ChatWithSignal.Domain.Messengers
         /// Create messenger based on group / Створення месенджера на основі групи
         /// </summary>
         /// <param name="group"></param>
-        public Messenger(Group group) 
-            : this(group.Id, MessengerTypeEnum.Group, group.Members) 
+        public Messenger(Group group, bool needMembers = true) 
+            : this(group.Id, MessengerTypeEnum.Group, group.MembersJson, needMembers) 
         {
             Name = group.Name;
         }
@@ -46,8 +52,8 @@ namespace ChatWithSignal.Domain.Messengers
         /// Create messenger based on chat / Створення месенджера на основі чату
         /// </summary>
         /// <param name="chat"></param>
-        public Messenger(Chat chat)
-            : this(chat.Id, MessengerTypeEnum.Chat, chat.Members)
+        public Messenger(Chat chat, bool needMembers = true)
+            : this(chat.Id, MessengerTypeEnum.Chat, chat.MembersJson, needMembers)
             { }
 
         /// <summary>
@@ -61,10 +67,13 @@ namespace ChatWithSignal.Domain.Messengers
             Name = chatMemberNickName[activeProfile.Id];
         }
 
-        private Messenger(Guid id, MessengerTypeEnum type, Dictionary<string, MemberRoleEnum> members)
-            : base(id, members)
+        private Messenger(Guid id, MessengerTypeEnum type, string membersJson, bool needMembers)
         { 
-            Type = type; 
+            Id = id;
+            Type = type;
+
+            if(needMembers)
+                Members = JsonSerializer.Deserialize<Dictionary<string, MemberRoleEnum>>(membersJson);
         }
         #endregion
     }

@@ -2,6 +2,7 @@
 using ChatWithSignal.Domain.Enum;
 using ChatWithSignal.Domain.Identity;
 using ChatWithSignal.Domain.Messengers;
+using ChatWithSignal.Domain.Messengers.Base;
 using ChatWithSignal.Domain.Messengers.Components;
 using ChatWithSignal.Domain.Search;
 using ChatWithSignal.Models.Messenger;
@@ -28,10 +29,8 @@ namespace ChatWithSignal.Service.Interface
         
         Task<List<Content>> GetContentsAsync(Messenger messenger);
 
-        Task<ICollection<SearchGroup>> GetSGroupsAsync();
+        Task<ICollection<BaseMessenger>> GetSearchGroupsAsync();
 
         Task ChangeGroupSettingsAsync(string profileEmail, GroupSettingsViewModel model);
-
-        Task SaveGroupAsync(Group group);
     }
 }

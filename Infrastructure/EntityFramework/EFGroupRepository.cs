@@ -23,20 +23,12 @@ namespace ChatWithSignal.Infrastructure.EntityFramework
 
         public async Task<ICollection<Group>> GetAsync()
         {
-            var groups = await _context.Groups.Where(x => x.IsPublic).ToListAsync();
-
-            foreach (var group in groups)
-                await group.GetFromJsonAsync();
-
-            return groups;
+            return await _context.Groups.Where(x => x.IsPublic).ToListAsync();
         }
 
         public async Task<Group> GetAsync(Guid groupId)
         {
-            var group = await _context.Groups.FirstOrDefaultAsync(x => x.Id == groupId);
-            await group.GetFromJsonAsync();
-
-            return group;
+            return await _context.Groups.FirstOrDefaultAsync(x => x.Id == groupId);
         }
 
         public async Task AddAsync(Group group)

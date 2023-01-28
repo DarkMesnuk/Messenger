@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Пошук";
-    ICollection<SearchGroup> groups = Model;
+    ICollection<BaseMessenger> groups = Model;
 }
 
 <div class="search-components">
@@ -14,7 +14,7 @@
     @foreach (var group in groups)
     {
         <h5>
-            @group.Name - Кількість учасників: @group.MembersCount - <a asp-controller="Messenger" asp-action="JoinGroup" method="post" asp-route-messengerId="@group.Id">Приєднатися</a>
+            @group.Name - <a asp-controller="Messenger" asp-action="JoinGroup" method="post" asp-route-messengerId="@group.Id">Приєднатися</a>
         </h5>
     }
 </div>

@@ -10,7 +10,7 @@ using System.Text.Json;
 
 namespace ChatWithSignal.Domain.Messengers
 {
-    public class Chat : BaseMessenger
+    public class Chat : BaseRepositoryMessenger
     {
         #region Constructors
         /// <summary>
@@ -25,7 +25,6 @@ namespace ChatWithSignal.Domain.Messengers
         /// <param name="recipient"></param>
         public Chat(Profile sender, Profile recipient)
             : base(
-                  Guid.NewGuid(),
                   new Dictionary<string, MemberRoleEnum> { { sender.Id, MemberRoleEnum.Owner }, { recipient.Id, MemberRoleEnum.Owner } 
                 })
         {
@@ -33,7 +32,6 @@ namespace ChatWithSignal.Domain.Messengers
                 { sender.Id, recipient.NickName },
                 { recipient.Id, sender.NickName} 
             });
-            MembersJson = JsonSerializer.Serialize(Members);
         }
         #endregion
     }

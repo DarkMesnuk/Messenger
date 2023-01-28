@@ -1,4 +1,5 @@
 ﻿#region Library
+using ChatWithSignal.Domain.Messengers;
 using ChatWithSignal.Domain.Messengers.Components;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,6 @@ namespace ChatWithSignal.Infrastructure.Interface
         Task RemoveAsync(Content content);
         Task<Content> GetAsync(Guid contentId);
         Task SaveAsync(Content content);
-        Task<List<Content>> GetAllAsync(Guid id);
+        Task<List<Content>> GetAllAsync(Messenger messenger);
     }
 }

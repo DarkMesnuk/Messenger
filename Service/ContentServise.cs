@@ -28,7 +28,7 @@ namespace ChatWithSignal.Service
 
         public async Task<List<Content>> GetAll(Messenger messenger)
         {
-            return await _contentRepository.GetAllAsync(messenger.Id);
+            return await _contentRepository.GetAllAsync(messenger);
         }
     }
 }

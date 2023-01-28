@@ -21,10 +21,7 @@ namespace ChatWithSignal.Infrastructure.EntityFramework
 
         public async Task<Chat> GetAsync(Guid chatId)
         {
-            var chat = await _context.Chats.FirstOrDefaultAsync(x => x.Id == chatId);
-            await chat.GetFromJsonAsync();
-
-            return chat;
+            return await _context.Chats.FirstOrDefaultAsync(x => x.Id == chatId);
         }
 
         public async Task AddAsync(Chat chat)

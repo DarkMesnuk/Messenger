@@ -41,7 +41,7 @@ namespace ChatWithSignal.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Groups() 
-            => View(await _messengerService.GetSGroupsAsync());
+            => View(await _messengerService.GetSearchGroupsAsync());
         #endregion
     }
 }

@@ -25,11 +25,12 @@ namespace ChatWithSignal.Domain.Messengers.Components
         /// </summary>
         /// <param name="senderId"></param>
         /// <param name="message"></param>
-        public Content(Profile profile, BaseMessenger messenger, string message)
+        public Content(Profile profile, Messenger messenger, string message)
         {
             SenderId = profile.Id;
             Message = message;
             MessengerId = messenger.Id;
+            MessengerType = messenger.Type;
             DateTimeCreated = DateTime.UtcNow.ToString();
         }
         #endregion

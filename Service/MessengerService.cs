@@ -89,24 +89,25 @@ namespace ChatWithSignal.Service
             var sender = await _profileService.GetByEmailAsync(senderEmail);
             var chats = await getChatsAsync(recipient);
 
-            var chat = chats.FirstOrDefault(x => x.Members.Where(x => x.Key == sender.Id).Any());
+            var messenger = chats.Select(x => new Messenger(x)).FirstOrDefault(x => x.Members.Where(x => x.Key == sender.Id).Any());
+            var chat = new Chat();
 
             if (chat == null || chat == default)
             {
                 chat = new Chat(sender, recipient);
 
-                await _profileService.JoinMessengerAsync(sender, new Messenger(chat));
-                await _profileService.JoinMessengerAsync(recipient, new Messenger(chat));
+                await _profileService.JoinMessengerAsync(sender, new Messenger(chat, false));
+                await _profileService.JoinMessengerAsync(recipient, new Messenger(chat, false));
 
                 await _chatsRepository.AddAsync(chat);
             }
 
-            await sender.SetCurrentMessager(new Messenger(chat));
+            await sender.SetCurrentMessager(new Messenger(chat, false));
 
             return chat;
         }
         
-        private async Task<ICollection<Chat>> getChatsAsync(Profile profile)
+        private async Task<List<Chat>> getChatsAsync(Profile profile)
         {
             var profileChats = new List<Chat>();
 
@@ -140,15 +141,15 @@ namespace ChatWithSignal.Service
         #endregion
 
         #region Group
-        public async Task<ICollection<SearchGroup>> GetSGroupsAsync()
+        public async Task<ICollection<BaseMessenger>> GetSearchGroupsAsync()
         {
             var groups = await _groupRepository.GetAsync();
-            var sGroups = new List<SearchGroup>();
 
-            foreach (var group in groups)
-                sGroups.Add(new SearchGroup(group));
+            var searchGroups = new List<BaseMessenger>();
 
-            return sGroups;
+            searchGroups.AddRange(groups);
+
+            return searchGroups;
         }
 
         public async Task<Group> GetOrJoinGroupAsync(string profileEmail, Guid groupId)
@@ -161,12 +162,13 @@ namespace ChatWithSignal.Service
             {
                 if (!isMemberGroup)
                 {
-                    await _profileService.JoinMessengerAsync(profile, new Messenger(group));
                     await group.AddMember(profile);
-                    await SaveGroupAsync(group);
+                    await _groupRepository.SaveAsync(group);
+
+                    await _profileService.JoinMessengerAsync(profile, new Messenger(group, false));
                 }
 
-                await _profileService.SetCurrentMessagerAsync(profile, new Messenger(group));
+                await _profileService.SetCurrentMessagerAsync(profile, new Messenger(group, false));
                 return group;
             }
 
@@ -178,9 +180,9 @@ namespace ChatWithSignal.Service
             var owner = await _profileService.GetByEmailAsync(profileEmail);
             var group = new Group(groupName, isPublic, owner);
 
-            var messenger = new Messenger(group);
-
             await _groupRepository.AddAsync(group);
+
+            var messenger = new Messenger(group, false);
 
             await _profileService.JoinMessengerAsync(owner, messenger);
             await _profileService.SetCurrentMessagerAsync(owner, messenger);
@@ -190,17 +192,8 @@ namespace ChatWithSignal.Service
         {
             var group = await GetOrJoinGroupAsync(profileEmail, model.GroupId);
 
-            var groupName = string.IsNullOrEmpty(model.Name) ? group.Name : model.Name;
-            var groupText = model.Text == null ? group.Text : model.Text;
-            var groupIsPublic = model.IsPublic;
+            await group.ChangeSetting(model);
 
-            await group.ChangeSetting(groupName, groupText, groupIsPublic);
-
-            await SaveGroupAsync(group);
-        }
-
-        public async Task SaveGroupAsync(Group group)
-        {
             await _groupRepository.SaveAsync(group);
         }
 
