@@ -4,6 +4,7 @@
     @await Html.PartialAsync("HeadPartial")
 </head>
 <body>
+    @await Html.PartialAsync("ScriptPartial")
     @await Html.PartialAsync("HeaderPartial")
 
     <div class="main-container">
@@ -13,6 +14,5 @@
     </div>
 
     @await Html.PartialAsync("FooterPartial")
-    @await Html.PartialAsync("ScriptPartial")
 </body>
 </html>

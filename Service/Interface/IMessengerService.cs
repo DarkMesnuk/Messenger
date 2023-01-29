@@ -27,7 +27,7 @@ namespace ChatWithSignal.Service.Interface
 
         Task<Messenger> GetMessengerAsync(string profileEmail, string messengerId, MessengerTypeEnum messengerType);
         
-        Task<List<Content>> GetContentsAsync(Messenger messenger);
+        Task<List<Content>> GetContentsAsync(Messenger messenger, ushort levelLoading);
 
         Task<ICollection<BaseMessenger>> GetSearchGroupsAsync();
 

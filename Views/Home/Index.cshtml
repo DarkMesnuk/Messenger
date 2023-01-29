@@ -11,12 +11,6 @@ IEnumerable<Messenger> messengers = Model;
 
         <div class="messengers-list" id="messengers">
         </div>
-
-        <script type="text/javascript">
-            let messengersData = @Html.Raw(JsonConvert.SerializeObject(Model));
-        </script>
-
-        <script type="text/javascript" src="~/js/homeIndex.js"></script>
     </div>
 
     <div class="open-messengers">
@@ -28,3 +22,12 @@ IEnumerable<Messenger> messengers = Model;
         </div>
     </div>
 </div>
+
+
+<script type="text/javascript">
+    let messengersData = @Html.Raw(JsonConvert.SerializeObject(Model));
+</script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="~/js/homeIndex.js"></script>
+<script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/js/signalr/config.js"></script>

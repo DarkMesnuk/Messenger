@@ -10,6 +10,6 @@ namespace ChatWithSignal.Service.Interface
     public interface IContentServise
     {
         Task<Content> CreateAsync(Content content);
-        Task<List<Content>> GetAll(Messenger messenger);
+        Task<List<Content>> GetAll(Messenger messenger, ushort levelLoading);
     }
 }

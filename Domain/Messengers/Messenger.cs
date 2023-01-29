@@ -43,7 +43,7 @@ namespace ChatWithSignal.Domain.Messengers
         /// </summary>
         /// <param name="group"></param>
         public Messenger(Group group, bool needMembers = true) 
-            : this(group.Id, MessengerTypeEnum.Group, group.MembersJson, needMembers) 
+            : this(group, MessengerTypeEnum.Group, needMembers) 
         {
             Name = group.Name;
         }
@@ -53,7 +53,7 @@ namespace ChatWithSignal.Domain.Messengers
         /// </summary>
         /// <param name="chat"></param>
         public Messenger(Chat chat, bool needMembers = true)
-            : this(chat.Id, MessengerTypeEnum.Chat, chat.MembersJson, needMembers)
+            : this(chat, MessengerTypeEnum.Chat, needMembers)
             { }
 
         /// <summary>
@@ -67,13 +67,14 @@ namespace ChatWithSignal.Domain.Messengers
             Name = chatMemberNickName[activeProfile.Id];
         }
 
-        private Messenger(Guid id, MessengerTypeEnum type, string membersJson, bool needMembers)
+        private Messenger(BaseRepositoryMessenger messenger, MessengerTypeEnum type, bool needMembers)
         { 
-            Id = id;
+            Id = messenger.Id;
+            ContentCount = messenger.ContentCount;
             Type = type;
 
             if(needMembers)
-                Members = JsonSerializer.Deserialize<Dictionary<string, MemberRoleEnum>>(membersJson);
+                Members = JsonSerializer.Deserialize<Dictionary<string, MemberRoleEnum>>(messenger.MembersJson);
         }
         #endregion
     }

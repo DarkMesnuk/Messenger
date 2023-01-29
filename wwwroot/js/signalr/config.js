@@ -2,7 +2,9 @@
     .withUrl("/chat")
     .build();
 
-hubConnection.on("Load", function (message, time, senderNickName, activeProfileEmail, senderEmail) {
+let currentlevelLoading = 0;
+
+hubConnection.on("Load", function (message, time, senderNickName, activeProfileEmail, senderEmail, levelLoading) {
     let messageElem = document.createElement("p");
     let timeElem = document.createElement("p");
     timeElem.setAttribute("class", "time");
@@ -23,10 +25,8 @@ hubConnection.on("Load", function (message, time, senderNickName, activeProfileE
     messageElem.appendChild(document.createTextNode(message));
     messageElem.appendChild(timeElem);
 
-
-    var firstElem = document.getElementById("chatroom");
-    firstElem.append(messageElem);
-    updateScroll();
+    chatroom.append(messageElem);
+    currentlevelLoading = levelLoading;
 });
 
 hubConnection.on("Clear", function () {
@@ -54,9 +54,7 @@ hubConnection.on("Send", function (message, time, senderNickName, activeProfileE
     messageElem.appendChild(document.createTextNode(message));
     messageElem.appendChild(timeElem);
 
-
-    var firstElem = document.getElementById("chatroom");
-    firstElem.prepend(messageElem);
+    chatroom.prepend(messageElem);
     updateScroll();
 });
 
@@ -71,8 +69,7 @@ hubConnection.on("SendDataDay", function (day, month, year, yearSee) {
 
     dataElem.appendChild(document.createTextNode(data));
 
-    var firstElem = document.getElementById("chatroom");
-    firstElem.prepend(dataElem);
+    chatroom.prepend(dataElem);
     updateScroll();
 });
 

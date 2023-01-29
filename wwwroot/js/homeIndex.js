@@ -36,13 +36,19 @@ messengersData.forEach(messenger => {
 });
 
 var scrolled = false;
+let chatroom = document.getElementById("chatroom");
+
 function updateScroll() {
     if (!scrolled) {
-        var element = document.getElementById("chatroom");
-        element.scrollTop = element.scrollHeight;
+        chatroom.scrollTop = chatroom.scrollHeight;
     }
 }
 
-$("#yourDivID").on('scroll', function () {
-    scrolled = true;
+let localLevelLoading = 1;
+
+$(chatroom).scroll(function () {
+    if (localLevelLoading == currentlevelLoading && chatroom.scrollTop <= (-1 * chatroom.scrollHeight + 2000)) {
+        localLevelLoading++;
+        hubConnection.invoke("LoadingContent", "" + localLevelLoading);
+    }
 });

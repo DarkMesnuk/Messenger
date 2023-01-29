@@ -21,5 +21,13 @@ namespace ChatWithSignal.Domain.Messengers.Base
         /// Name / Назва
         /// </summary>
         public string Name { get; protected set; }
+
+        /// <summary>
+        /// Content Count/Кількість контенту
+        /// </summary>
+        public uint ContentCount { get; protected set; }
+
+        public void AddContent() 
+            => ContentCount++;
     }
 }

@@ -64,9 +64,9 @@ namespace ChatWithSignal.Service
             }
         }
 
-        public async Task<List<Content>> GetContentsAsync(Messenger messenger)
+        public async Task<List<Content>> GetContentsAsync(Messenger messenger, ushort levelLoading)
         {
-            return await _contentServise.GetAll(messenger);
+            return await _contentServise.GetAll(messenger, levelLoading);
         }
 
         public async Task SendContentAsync(Profile profile, Messenger messenger, Content content)
@@ -75,6 +75,21 @@ namespace ChatWithSignal.Service
             {
                 await _profileService.SetLastActiveTimeAsync(profile);
                 await _contentServise.CreateAsync(content);
+
+                switch (messenger.Type)
+                {
+                    case MessengerTypeEnum.Chat:
+                        var chat = await getChatAsync(profile, messenger.Id);
+                        chat.AddContent();
+                        await _chatsRepository.SaveAsync(chat);
+                        break;
+
+                    case MessengerTypeEnum.Group:
+                        var group = await getGroupAsync(profile, messenger.Id);
+                        group.AddContent();
+                        await _groupRepository.SaveAsync(group);
+                        break;
+                }
             }
         }
 
@@ -89,20 +104,23 @@ namespace ChatWithSignal.Service
             var sender = await _profileService.GetByEmailAsync(senderEmail);
             var chats = await getChatsAsync(recipient);
 
-            var messenger = chats.Select(x => new Messenger(x)).FirstOrDefault(x => x.Members.Where(x => x.Key == sender.Id).Any());
-            var chat = new Chat();
+            var messenger = chats.Select(x => new Messenger(x, false)).FirstOrDefault(x => x.Members.Where(x => x.Key == sender.Id).Any());
 
-            if (chat == null || chat == default)
+            if (messenger != null && messenger.Id != default)
             {
-                chat = new Chat(sender, recipient);
-
-                await _profileService.JoinMessengerAsync(sender, new Messenger(chat, false));
-                await _profileService.JoinMessengerAsync(recipient, new Messenger(chat, false));
-
-                await _chatsRepository.AddAsync(chat);
+                await sender.SetCurrentMessager(messenger);
+                return await getChatAsync(sender, messenger.Id);
             }
 
-            await sender.SetCurrentMessager(new Messenger(chat, false));
+            var chat = new Chat(sender, recipient);
+            messenger = new Messenger(chat, false);
+
+            await _profileService.JoinMessengerAsync(sender, messenger);
+            await _profileService.JoinMessengerAsync(recipient, messenger);
+
+            await _chatsRepository.AddAsync(chat);
+
+            await sender.SetCurrentMessager(messenger);
 
             return chat;
         }
@@ -215,6 +233,16 @@ namespace ChatWithSignal.Service
             }
 
             return profileGroups;
+        }
+
+        private async Task<Group> getGroupAsync(Profile profile, Guid messengerId)
+        {
+            var isMemberGroup = isMember(messengerId, profile, MessengerTypeEnum.Group);
+
+            if (isMemberGroup)
+                return await _groupRepository.GetAsync(messengerId);
+
+            return null;
         }
         #endregion
     }

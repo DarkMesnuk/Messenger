@@ -14,6 +14,6 @@ namespace ChatWithSignal.Infrastructure.Interface
         Task RemoveAsync(Content content);
         Task<Content> GetAsync(Guid contentId);
         Task SaveAsync(Content content);
-        Task<List<Content>> GetAllAsync(Messenger messenger);
+        Task<List<Content>> GetAllAsync(Messenger messenger, ushort levelLoading);
     }
 }
