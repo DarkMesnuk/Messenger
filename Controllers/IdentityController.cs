@@ -25,30 +25,15 @@ namespace ChatWithSignal.Controllers
         #region View
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult Login()
-        {
-            if (!User.Identity.IsAuthenticated)
-                return View(new LoginViewModel());
-
-            return RedirectToAction("Main", "Home");
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public IActionResult Register()
-        {
-            if (!User.Identity.IsAuthenticated)
-                return View(new RegisterViewModel());
-
-            return RedirectToAction("Main", "Home");
-        }
-
+        public IActionResult Index()
+            => View();
+            
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _singInManager.SignOutAsync();
-            return RedirectToAction("Login", "Identity");
+            return RedirectToAction("Index", "Identity");
         }
         #endregion
 
@@ -58,7 +43,7 @@ namespace ChatWithSignal.Controllers
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View("Index");
 
             var profile = await _userManager.FindByEmailAsync(model.Email);
 
@@ -75,7 +60,7 @@ namespace ChatWithSignal.Controllers
             else
                 ModelState.AddModelError("", "Неправильна пошта або пароль");
 
-            return View();
+            return View("Index");
         }
 
         [AllowAnonymous]
@@ -83,7 +68,7 @@ namespace ChatWithSignal.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View("Index");
 
             if (model.Password == model.RepeatPassword)
             {
@@ -96,12 +81,12 @@ namespace ChatWithSignal.Controllers
                     await _userManager.CreateAsync(profile, model.Password);
                 }
 
-                return RedirectToAction("Login", "Identity");
+                return RedirectToAction("Index", "Identity");
             }
             else
                 ModelState.AddModelError(nameof(RegisterViewModel.RepeatPassword), "Паролі не однакові");
-
-            return View();
+            
+            return View("Index");
         }
         #endregion
     }

@@ -1,0 +1,53 @@
+﻿#login .identity-box {
+    box-shadow: 0 1vh 2.5vh yellow;
+}
+
+#login .identity-box h2 {
+    color: yellow;
+}
+
+#login .identity-box .string-parametrs input {
+    color: aqua;
+}
+
+#login .identity-box .string-parametrs label {
+    color: aqua;
+}
+
+#login .identity-box .string-parametrs input:focus ~ label,
+.identity-box .string-parametrs input:valid ~ label {
+    color: yellow;
+}
+
+#login #submit {
+    color: aqua;
+    border: 1px solid aqua;
+}
+
+#login #submit:hover {
+    color: yellow;
+    border: 1px solid yellow;
+}
+
+#rememberme {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0.5vh;
+    background-color: aqua;
+    border-radius: 10%;
+}
+
+#rememberme:checked {
+    background-color: yellow;
+}
+
+.checkbox {
+    text-align: center;
+    margin-top: -3vh;
+    font-size: 1.4vh;
+}
+
+.identity-box .checkbox input:valid ~ label {
+    color: yellow;
+}

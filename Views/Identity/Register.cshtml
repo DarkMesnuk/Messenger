@@ -1,7 +1,7 @@
 ﻿@model RegisterViewModel
-<link rel="stylesheet" href="~/css/Identity/Main.css" />
+<link rel="stylesheet" href="~/css/Identity/Register.css" />
 <div class="identity-box">
-    <h2 class="identity-name">Реєстрування</h2>
+    <h2 class="identity-name">Реєстрація</h2>
 
     <form asp-area="" asp-controller="Identity" asp-action="Register" method="post">
         <div class="string-parametrs" id="nickname">
@@ -26,7 +26,6 @@
         
         <div class="action-buttons">
             <input id="submit" type="submit" asp-controller="Identity" asp-action="Register" value="Зареєструватися" />
-            <a class="button-type" controller="Identity" asp-action="Login">Увійти</a>
         </div>
 
     </form>

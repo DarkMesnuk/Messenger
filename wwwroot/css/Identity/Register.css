@@ -1,0 +1,31 @@
+﻿#register .identity-box {
+    box-shadow: 0 1vh 2.5vh aqua;
+}
+
+#register .identity-box h2 {
+    color: aqua;
+}
+
+#register .identity-box .string-parametrs input {
+    color: yellow;
+}
+
+
+#register .identity-box .string-parametrs label {
+    color: yellow;
+}
+
+#register .identity-box .string-parametrs input:focus ~ label,
+.identity-box .string-parametrs input:valid ~ label {
+    color: aqua;
+}
+
+#register #submit {
+    color: yellow;
+    border: 1px solid yellow;
+}
+
+#register #submit:hover {
+    color: aqua;
+    border: 1px solid aqua;
+}

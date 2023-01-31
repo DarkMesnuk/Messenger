@@ -68,7 +68,7 @@ namespace ChatWithSignal
             {
                 options.Cookie.Name = "SCAuth";
                 options.Cookie.HttpOnly = true;
-                options.LoginPath = "/Identity/Login";
+                options.LoginPath = "/Identity/Index";
                 options.AccessDeniedPath = "/Identity/Accessdenied";
                 options.SlidingExpiration = true;
             });

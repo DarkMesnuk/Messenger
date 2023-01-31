@@ -1,0 +1,10 @@
+﻿<link rel="stylesheet" href="~/css/Identity/Main.css" />
+<div class="identity-area">
+    <div id="login">
+        @await Html.PartialAsync("Login", new LoginViewModel())
+    </div>
+
+    <div id="register">
+        @await Html.PartialAsync("Register", new RegisterViewModel())
+    </div>
+</div>

@@ -1,0 +1,66 @@
+﻿#open-messenger {
+    box-shadow: 0 0.5vh 1vh yellow;
+    width: 75%;
+    background: #353535;
+}
+
+#chatroom {
+    background: #252525;
+    margin: 1vh;
+    height: 90%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    border-radius: 1vh;
+    word-wrap: break-word;
+    font-size: 1.2vh;
+}
+
+#inputForm {
+    position: absolute;
+    display: flex;
+    width: 73%;
+    bottom: 5%;
+    justify-content: space-between;
+    text-align: center;
+}
+
+input {
+    background: #353535;
+    border: 0;
+    box-shadow: 0 0 1vh yellow;
+}
+
+#message {
+    margin-left: 2vh;
+    width: 60%;
+    color: yellow;
+}
+
+#sendContent {
+    margin-right: 3vh;
+    width: 25%;
+    color: yellow;
+}
+
+#message:focus, #sendContent:hover {
+    color: aqua;
+    background-color: #202020;
+}
+
+.recipienti {
+    text-align: left;
+    margin-left: 2%;
+    margin-right: 40%;
+    color: aqua;
+}
+
+.sender {
+    text-align: right;
+    margin-right: 2%;
+    margin-left: 40%;
+    color: yellow;
+}
+.time {
+    font-size: 0.9vh;
+}

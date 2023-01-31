@@ -3,8 +3,10 @@ IEnumerable<Messenger> messengers = Model;
 }
 
 <link rel="stylesheet" href="~/css/Home/Main.css" />
+<link rel="stylesheet" href="~/css/Home/MessengersZone.css" />
+<link rel="stylesheet" href="~/css/Home/OpenMessengers.css" />
 <div class="messengers-area">
-    <div class="messengers-zone">
+    <div class="messenger-box" id="messengers-zone">
         <div class="create-group">
             <a class="button-type" method="post" asp-controller="Messenger" asp-action="CreateGroup">Створити групу</a>
         </div>
@@ -13,7 +15,7 @@ IEnumerable<Messenger> messengers = Model;
         </div>
     </div>
 
-    <div class="open-messengers">
+    <div class="messenger-box" id="open-messenger">
         <div id="chatroom"></div>
 
         <div id="inputForm">

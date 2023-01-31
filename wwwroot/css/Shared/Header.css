@@ -1,16 +1,23 @@
 ﻿header {
+    height: 3vh;
+    position: fixed;
     width: 100%;
-    padding-top: 2vh;
     float: left;
     background: #353535;
+    font-size: 1.5vh;
+    border-radius: 0 0 1vh 1vh;
+    box-shadow: 0 0.2vh 0.5vh green;
+}
+
+#nav {
+    height: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 ul {
     display: flex;
-    gap: 72px;
-    justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
+    gap: 10vh;
 }
 
 ul li{
@@ -20,18 +27,17 @@ ul li{
 ul li a {
     text-decoration: none;
     text-transform: uppercase;
-    color: yellow;
-    padding: 10px;
+    color: green;
 }
 
 ul:hover li a {
     text-decoration: none;
-    color: #00d8ff;
+    color: lightgreen;
     animation: glowing ls ease-in-out infinite alternate;
 }
 
 ul:hover li a:not(:hover) {
-    color: yellow;
+    color: green;
     opacity: 0.3;
     filter: blur(1px);
 }

@@ -1,0 +1,41 @@
+﻿#messengers-zone {
+    box-shadow: 0 0.5vh 1vh aqua;
+    width: 25%;
+    background: #202020;
+}
+
+
+.create-group {
+    width: 100%;
+    height: 4%;
+    border-bottom: 1px solid aqua;
+    font-size: 1.5vh;
+}
+
+.create-group a {
+    color: aqua;
+}
+
+.create-group a:hover {
+    color: yellow;
+    text-decoration: none;
+}
+
+.messengers-list {
+    text-align: center;
+    overflow: auto;
+    border-bottom: 1px solid aqua;
+}
+
+.messengers-list h3 {
+    font-size: 2.5vh;
+}
+
+.messenger {
+    border: 1px solid black;
+}
+
+.messenger:hover {
+    background: #303030;
+    color: yellow;
+}
