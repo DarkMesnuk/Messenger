@@ -23,9 +23,14 @@ namespace ChatWithSignal.Domain.Messengers.Base
         public MessengerTypeEnum MessengerType { get; protected set; }
 
         /// <summary>
-        /// DateTime Create // Дата створення 
+        /// Date Create // Дата створення
         /// </summary>
-        public string DateTimeCreated { get; protected set; }
+        public string DateCreated { get; protected set; }
+
+        /// <summary>
+        /// Time Create // Час створення 
+        /// </summary>
+        public string TimeCreated { get; protected set; }
 
         /// <summary>
         /// Sender Id / Id відправника

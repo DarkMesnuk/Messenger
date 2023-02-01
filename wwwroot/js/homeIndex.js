@@ -1,5 +1,11 @@
 ﻿let number = 0;
 
+document.getElementById("sendContent").addEventListener("click", function (e) {
+    let message = document.getElementById("message").value;
+    document.getElementById("message").value = "";
+    hubConnection.invoke("SendMessage", message);
+});
+
 messengersData.forEach(messenger => {
     number++;
     let div = document.createElement("div");
@@ -7,9 +13,12 @@ messengersData.forEach(messenger => {
     div.setAttribute("id", "messenger-" + number);
 
     div.addEventListener("click", function (e) {
+        localLevelLoading = 1;
+
         let number = e.currentTarget.id.split('-')[1];
         let messengerId = document.getElementById("messengerId-" + number).value;
         let messengerType = document.getElementById("messengerType-" + number).value;
+
         hubConnection.invoke("OpenMessenger", messengerId, messengerType);
     });
 

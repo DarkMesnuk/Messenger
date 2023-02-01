@@ -10,10 +10,10 @@ namespace ChatWithSignal.Infrastructure.Interface
 {
     public interface IContentRepository
     {
+        Task<List<Content>> GetAllAsync(Messenger messenger, ushort levelLoading);
+        Task<Content> GetAsync(Guid contentId);
         Task AddAsync(Content content);
         Task RemoveAsync(Content content);
-        Task<Content> GetAsync(Guid contentId);
         Task SaveAsync(Content content);
-        Task<List<Content>> GetAllAsync(Messenger messenger, ushort levelLoading);
     }
 }

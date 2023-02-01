@@ -2,7 +2,6 @@
 using ChatWithSignal.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 #endregion
@@ -23,6 +22,9 @@ namespace ChatWithSignal.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index()
-            => View(await _messengerService.GetMessengersAsync(User.Identity.Name));
+        {
+            var messengers = await _messengerService.GetMessengersAsync(User.Identity.Name);
+            return View(messengers.OrderBy(x => x.LastDateTimeActive));
+        }
     }
 }

@@ -5,6 +5,16 @@
 let currentlevelLoading = 0;
 
 hubConnection.on("Load", function (message, time, senderNickName, activeProfileEmail, senderEmail, levelLoading) {
+    chatroom.append(CreateMessageElem(message, time, senderNickName, activeProfileEmail, senderEmail));
+    currentlevelLoading = levelLoading;
+});
+
+hubConnection.on("Send", function (message, time, senderNickName, activeProfileEmail, senderEmail) {
+    chatroom.prepend(CreateMessageElem(message, time, senderNickName, activeProfileEmail, senderEmail));
+    updateScroll();
+});
+
+function CreateMessageElem(message, time, senderNickName, activeProfileEmail, senderEmail) {
     let messageElem = document.createElement("p");
     let timeElem = document.createElement("p");
     timeElem.setAttribute("class", "time");
@@ -25,58 +35,29 @@ hubConnection.on("Load", function (message, time, senderNickName, activeProfileE
     messageElem.appendChild(document.createTextNode(message));
     messageElem.appendChild(timeElem);
 
-    chatroom.append(messageElem);
-    currentlevelLoading = levelLoading;
-});
+    return messageElem;
+}
 
 hubConnection.on("Clear", function () {
     document.getElementById("chatroom").innerText = "";
 });
 
-hubConnection.on("Send", function (message, time, senderNickName, activeProfileEmail, senderEmail) {
-    let messageElem = document.createElement("p");
-    let timeElem = document.createElement("p");
-    timeElem.setAttribute("class", "time");
-    timeElem.appendChild(document.createTextNode("\n" + time));
-
-    if (activeProfileEmail == senderEmail) {
-        messageElem.setAttribute("class", "sender");
-    }
-    else {
-        let nickNameElem = document.createElement("h6");
-        nickNameElem.appendChild(document.createTextNode(senderNickName));
-        nickNameElem.setAttribute("class", "recipienti");
-
-        messageElem.appendChild(nickNameElem);
-        messageElem.setAttribute("class", "recipienti");
-    }
-
-    messageElem.appendChild(document.createTextNode(message));
-    messageElem.appendChild(timeElem);
-
-    chatroom.prepend(messageElem);
-    updateScroll();
-});
-
-hubConnection.on("SendDataDay", function (day, month, year, yearSee) {
+hubConnection.on("SendDate", function (date) {
     let dataElem = document.createElement("h6");
-    dataElem.setAttribute("class", "sender");
-    var data = day + month;
+    dataElem.setAttribute("class", "date");
 
-    if (yearSee) {
-        data += year
-    }
-
-    dataElem.appendChild(document.createTextNode(data));
+    dataElem.appendChild(document.createTextNode(date));
 
     chatroom.prepend(dataElem);
-    updateScroll();
 });
 
-document.getElementById("sendContent").addEventListener("click", function (e) {
-    let message = document.getElementById("message").value;
-    document.getElementById("message").value = "";
-    hubConnection.invoke("SendMessage", message);
+hubConnection.on("LoadDate", function (date) {
+    let dataElem = document.createElement("h6");
+    dataElem.setAttribute("class", "date");
+
+    dataElem.appendChild(document.createTextNode(date));
+
+    chatroom.append(dataElem);
 });
 
 hubConnection.start()

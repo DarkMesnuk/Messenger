@@ -2,8 +2,6 @@
 using ChatWithSignal.Domain.Enum;
 using ChatWithSignal.Domain.Identity;
 using ChatWithSignal.Domain.Messengers.Base;
-using ChatWithSignal.Domain.Messengers.Components;
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
 #endregion

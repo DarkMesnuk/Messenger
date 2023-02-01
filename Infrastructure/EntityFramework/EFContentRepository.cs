@@ -26,16 +26,17 @@ namespace ChatWithSignal.Infrastructure.EntityFramework
         public async Task<List<Content>> GetAllAsync(Messenger messenger, ushort levelLoading)
         {
             var countLoadMessageByLevel = Config.CountLoadMessageByLevel;
+            long currentLoadMessage = levelLoading * countLoadMessageByLevel;
 
-            if (levelLoading * countLoadMessageByLevel >= messenger.ContentCount)
+            if (currentLoadMessage >= messenger.ContentCount)
             {
-                if (levelLoading * countLoadMessageByLevel <= messenger.ContentCount + countLoadMessageByLevel)
+                if (currentLoadMessage <= messenger.ContentCount + countLoadMessageByLevel)
                     return await _context.Contents.Where(x => x.MessengerType == messenger.Type).Where(x => x.MessengerId == messenger.Id).Take((int)(messenger.ContentCount - (countLoadMessageByLevel * (levelLoading - 1)))).ToListAsync();
                 else    
                     return new List<Content>();
             }
 
-            return await _context.Contents.Where(x => x.MessengerType == messenger.Type).Where(x => x.MessengerId == messenger.Id).Skip((int)(messenger.ContentCount - (countLoadMessageByLevel * levelLoading))).Take(countLoadMessageByLevel).ToListAsync();
+            return await _context.Contents.Where(x => x.MessengerType == messenger.Type).Where(x => x.MessengerId == messenger.Id).Skip((int)(messenger.ContentCount - 1 - (currentLoadMessage))).Take(countLoadMessageByLevel + 1).ToListAsync();
         }
 
         public async Task<Content> GetAsync(Guid contentId)

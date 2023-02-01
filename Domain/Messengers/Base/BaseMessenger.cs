@@ -1,10 +1,6 @@
 ﻿#region Library
-using ChatWithSignal.Domain.Enum;
 using ChatWithSignal.Domain.Messengers.Components;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json;
 using System.Threading.Tasks;
 #endregion
 
@@ -23,11 +19,21 @@ namespace ChatWithSignal.Domain.Messengers.Base
         public string Name { get; protected set; }
 
         /// <summary>
-        /// Content Count/Кількість контенту
+        /// Content Count / Кількість контенту
         /// </summary>
         public uint ContentCount { get; protected set; }
 
-        public void AddContent() 
-            => ContentCount++;
+        /// <summary>
+        /// Last dateTime sended content / Останній час надіслання контенту
+        /// </summary>
+        public string LastDateTimeActive { get;  set; }
+
+        public Task AddContent(Content content)
+        {
+            ContentCount++;
+            LastDateTimeActive = content.DateCreated + " " + content.TimeCreated;
+
+            return Task.CompletedTask;
+        }
     }
 }

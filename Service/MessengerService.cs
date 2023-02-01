@@ -4,7 +4,6 @@ using ChatWithSignal.Domain.Identity;
 using ChatWithSignal.Domain.Messengers;
 using ChatWithSignal.Domain.Messengers.Base;
 using ChatWithSignal.Domain.Messengers.Components;
-using ChatWithSignal.Domain.Search;
 using ChatWithSignal.Infrastructure.Interface;
 using ChatWithSignal.Models.Messenger;
 using ChatWithSignal.Service.Interface;
@@ -64,9 +63,15 @@ namespace ChatWithSignal.Service
             }
         }
 
+        public async Task<Messenger> GetCurrentMessengerAsync(string profileEmail)
+        {
+            var profile = await _profileService.GetByEmailAsync(profileEmail);
+            return await GetMessengerAsync(profileEmail, profile.CurrentMessengerId.ToString(), profile.CurrentMessengerType);
+        }
+
         public async Task<List<Content>> GetContentsAsync(Messenger messenger, ushort levelLoading)
         {
-            return await _contentServise.GetAll(messenger, levelLoading);
+            return await _contentServise.GetAllAsync(messenger, levelLoading);
         }
 
         public async Task SendContentAsync(Profile profile, Messenger messenger, Content content)
@@ -80,13 +85,13 @@ namespace ChatWithSignal.Service
                 {
                     case MessengerTypeEnum.Chat:
                         var chat = await getChatAsync(profile, messenger.Id);
-                        chat.AddContent();
+                        await chat.AddContent(content);
                         await _chatsRepository.SaveAsync(chat);
                         break;
 
                     case MessengerTypeEnum.Group:
                         var group = await getGroupAsync(profile, messenger.Id);
-                        group.AddContent();
+                        await group.AddContent(content);
                         await _groupRepository.SaveAsync(group);
                         break;
                 }
@@ -104,11 +109,13 @@ namespace ChatWithSignal.Service
             var sender = await _profileService.GetByEmailAsync(senderEmail);
             var chats = await getChatsAsync(recipient);
 
-            var messenger = chats.Select(x => new Messenger(x, false)).FirstOrDefault(x => x.Members.Where(x => x.Key == sender.Id).Any());
+            //var messenger = chats.Select(x => new Messenger(x, true)).FirstOrDefault(x => x.Members.Where(x => x.Key == sender.Id).Any());
+            var test = chats.Select(x => new Messenger(x, true));
+            var messenger = test.FirstOrDefault(x => x.Members.Where(x => x.Key == sender.Id).Any());
 
             if (messenger != null && messenger.Id != default)
             {
-                await sender.SetCurrentMessager(messenger);
+                await _profileService.SetCurrentMessagerAsync(sender, messenger);
                 return await getChatAsync(sender, messenger.Id);
             }
 
@@ -120,7 +127,7 @@ namespace ChatWithSignal.Service
 
             await _chatsRepository.AddAsync(chat);
 
-            await sender.SetCurrentMessager(messenger);
+            await _profileService.SetCurrentMessagerAsync(sender, messenger);
 
             return chat;
         }
@@ -136,7 +143,12 @@ namespace ChatWithSignal.Service
             {
                 try
                 {
-                    profileChats.Add(await _chatsRepository.GetAsync(chatId));
+                    var chat = await _chatsRepository.GetAsync(chatId);
+
+                    if (chat == null)
+                        await _profileService.LeaveMessengerAsync(profile, new Messenger(chatId, MessengerTypeEnum.Chat));
+                    else
+                        profileChats.Add(chat);
                 }
                 catch
                 {
@@ -154,7 +166,7 @@ namespace ChatWithSignal.Service
             if (isMemberGroup)
                 return await _chatsRepository.GetAsync(messengerId);
 
-            return null;
+            return new Chat();
         }
         #endregion
 

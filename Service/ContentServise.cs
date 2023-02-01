@@ -26,7 +26,7 @@ namespace ChatWithSignal.Service
             return content;
         }
 
-        public async Task<List<Content>> GetAll(Messenger messenger, ushort levelLoading)
+        public async Task<List<Content>> GetAllAsync(Messenger messenger, ushort levelLoading)
         {
             return await _contentRepository.GetAllAsync(messenger, levelLoading);
         }

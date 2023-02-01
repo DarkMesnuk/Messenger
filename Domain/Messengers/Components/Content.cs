@@ -31,7 +31,9 @@ namespace ChatWithSignal.Domain.Messengers.Components
             Message = message;
             MessengerId = messenger.Id;
             MessengerType = messenger.Type;
-            DateTimeCreated = DateTime.UtcNow.ToString();
+            var DateTimeCreate = DateTime.UtcNow;
+            DateCreated = DateTimeCreate.ToShortDateString();
+            TimeCreated = DateTimeCreate.ToShortTimeString();
         }
         #endregion
     }

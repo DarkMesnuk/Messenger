@@ -30,6 +30,8 @@ namespace ChatWithSignal.Domain.Messengers.Base
         {
             Id = Guid.NewGuid();
             MembersJson = JsonSerializer.Serialize(members);
+            var DateTimeCreate = DateTime.UtcNow;
+            LastDateTimeActive = DateTimeCreate.ToShortDateString() + " " + DateTimeCreate.ToShortTimeString();
         }
         #endregion
     }

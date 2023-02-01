@@ -24,7 +24,6 @@
 .messengers-list {
     text-align: center;
     overflow: auto;
-    border-bottom: 1px solid aqua;
 }
 
 .messengers-list h3 {
@@ -32,7 +31,7 @@
 }
 
 .messenger {
-    border: 1px solid black;
+    border-bottom: 1px solid aqua;
 }
 
 .messenger:hover {

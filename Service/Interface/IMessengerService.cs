@@ -4,7 +4,6 @@ using ChatWithSignal.Domain.Identity;
 using ChatWithSignal.Domain.Messengers;
 using ChatWithSignal.Domain.Messengers.Base;
 using ChatWithSignal.Domain.Messengers.Components;
-using ChatWithSignal.Domain.Search;
 using ChatWithSignal.Models.Messenger;
 using System;
 using System.Collections.Generic;
@@ -26,7 +25,9 @@ namespace ChatWithSignal.Service.Interface
         Task<List<Messenger>> GetMessengersAsync(string profileEmail);
 
         Task<Messenger> GetMessengerAsync(string profileEmail, string messengerId, MessengerTypeEnum messengerType);
-        
+
+        Task<Messenger> GetCurrentMessengerAsync(string profileEmail);
+
         Task<List<Content>> GetContentsAsync(Messenger messenger, ushort levelLoading);
 
         Task<ICollection<BaseMessenger>> GetSearchGroupsAsync();

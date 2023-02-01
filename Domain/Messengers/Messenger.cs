@@ -2,12 +2,10 @@
 using ChatWithSignal.Domain.Enum;
 using ChatWithSignal.Domain.Identity;
 using ChatWithSignal.Domain.Messengers.Base;
-using ChatWithSignal.Domain.Messengers.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
-using System.Threading.Tasks;
 #endregion
 
 namespace ChatWithSignal.Domain.Messengers
@@ -72,6 +70,7 @@ namespace ChatWithSignal.Domain.Messengers
             Id = messenger.Id;
             ContentCount = messenger.ContentCount;
             Type = type;
+            LastDateTimeActive = messenger.LastDateTimeActive;
 
             if(needMembers)
                 Members = JsonSerializer.Deserialize<Dictionary<string, MemberRoleEnum>>(messenger.MembersJson);
