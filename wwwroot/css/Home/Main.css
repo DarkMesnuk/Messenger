@@ -1,9 +1,5 @@
 ﻿.messengers-area {
-    position: fixed;
-    margin-top: 3vh;
-    margin-bottom: 2vh;
     height: 95vh;
-    width: 100%;
     display: flex;
     justify-content: space-between;
 }

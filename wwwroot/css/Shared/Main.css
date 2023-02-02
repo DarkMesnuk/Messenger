@@ -20,6 +20,9 @@ footer {
 .main {
     color: aqua;
     width: 100%;
+    position: fixed;
+    margin-top: 3vh;
+    margin-bottom: 2vh;
 }
 
 ::-webkit-scrollbar {
